@@ -29,19 +29,20 @@ in
   home.homeDirectory = "/home/eureka";
 
   home.packages = with pkgs; [
+    zoom-us
     nvtop
     nvidia-offload
     proton-installer
-    brave
     zsh
     oh-my-zsh
-    neofetch
+    fastfetch
+    pfetch
     git
     helix
     (vscode-with-extensions.override {
       vscodeExtensions = with vscode-extensions; [
         bbenoist.nix # nix syntax highlighting
-        matklad.rust-analyzer
+        rust-lang.rust-analyzer
         vadimcn.vscode-lldb # lldb for rust
         pkief.material-product-icons
         tamasfe.even-better-toml
@@ -56,17 +57,30 @@ in
       ];
     })
     nil
+    reaper
+    obsidian
     ffmpeg
     gphoto2
     jetbrains-mono
     libreoffice
+    zoom-us
   ];
 
+  programs.kitty = {
+    enable = true;
+    settings = {
+      # The window padding (in pts) (blank area between the text and the window border).
+      # A single value sets all four sides. Two values set the vertical and horizontal sides.
+      # Three values set top, horizontal and bottom. Four values set top, right, bottom and left.
+      window_padding_width = "8 0 8 8"; # extra padding for oh-my-zsh dst theme
+      hide_window_decorations = true;
+    };
+  };
   programs.helix = {
     enable = true;
     defaultEditor = true;
     settings = {
-      theme = "pop-dark";
+      theme = "ferra";
       editor = {
         cursor-shape = {
           insert = "underline";
@@ -82,7 +96,7 @@ in
         };
         indent-guides = {
           render = true;
-          character = "┆";
+          character = "|";
           skip-levels = 1;
         };
         lsp = {
@@ -121,5 +135,6 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+  nix.package = pkgs.nixVersions.latest;
   home.stateVersion = "23.11";
 }
